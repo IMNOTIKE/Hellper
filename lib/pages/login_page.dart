@@ -30,8 +30,9 @@ class _LoginPageState extends State<LoginPage> {
         password: _passwordController.text,
       );
       if (mounted) {
-        context.showSnackBar(message: 'Check your email for login link!');
+        context.showSnackBar(message: 'Logged in!');
         _emailController.clear();
+        _passwordController.clear();
       }
     } on AuthException catch (error) {
       context.showErrorSnackBar(message: error.message);
@@ -39,6 +40,30 @@ class _LoginPageState extends State<LoginPage> {
       context.showErrorSnackBar(message: 'Unexpected error occurred');
     }
 
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
+  Future<void> _signUp() async {
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      await supabase.auth.signUp(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+      if (mounted) {
+        context.showSnackBar(message: 'Check your email!');
+        _emailController.clear();
+        _passwordController.clear();
+      }
+    } on AuthException catch (error) {
+      context.showErrorSnackBar(message: error.message);
+    } catch (error) {
+      context.showErrorSnackBar(message: 'Unexpected error occurred');
+    }
     setState(() {
       _isLoading = false;
     });
@@ -53,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
       final session = data.session;
       if (session != null) {
         _redirecting = true;
-        Navigator.of(context).pushReplacementNamed('/account');
+        Navigator.of(context).pushReplacementNamed('/home');
       }
     });
     super.initState();
@@ -83,11 +108,19 @@ class _LoginPageState extends State<LoginPage> {
           TextFormField(
             controller: _passwordController,
             decoration: const InputDecoration(labelText: 'Password'),
+            obscureText: true,
+            enableSuggestions: false,
+            autocorrect: false,
           ),
           const SizedBox(height: 18),
           ElevatedButton(
             onPressed: _isLoading ? null : _signIn,
             child: Text(_isLoading ? 'Loading' : 'Log in'),
+          ),
+          const SizedBox(height: 18),
+          TextButton(
+            onPressed: _isLoading ? null : _signUp,
+            child: Text(_isLoading ? 'Loading' : 'Sign up'),
           ),
         ],
       ),

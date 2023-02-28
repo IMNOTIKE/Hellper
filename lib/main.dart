@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:hellper/pages/account_page.dart';
 import 'package:hellper/pages/login_page.dart';
-import 'package:hellper/pages/splah_page.dart';
+import 'package:hellper/pages/splash_page.dart';
+import 'package:hellper/pages/home_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,18 +20,18 @@ class Hellper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Supabase Flutter',
+      title: 'Hellper',
       theme: ThemeData.dark().copyWith(
-        primaryColor: Colors.green,
+        primaryColor: Colors.blue,
         textButtonTheme: TextButtonThemeData(
           style: TextButton.styleFrom(
-            foregroundColor: Colors.green,
+            foregroundColor: Colors.teal,
           ),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             foregroundColor: Colors.white,
-            backgroundColor: Colors.green,
+            backgroundColor: Colors.blue,
           ),
         ),
       ),
@@ -39,6 +40,7 @@ class Hellper extends StatelessWidget {
         '/': (_) => const SplashPage(),
         '/login': (_) => const LoginPage(),
         '/account': (_) => const AccountPage(),
+        '/home': (_) => HomePage(),
       },
     );
   }
